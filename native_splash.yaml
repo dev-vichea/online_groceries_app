@@ -1,0 +1,11 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#53B175"  # Set a background color for all platforms
+  image: "assets/images/logo.png"  # Set an image for all platforms
+
+  android_12:
+    color: "#53B175"
+    image: "assets/images/logo.png"
