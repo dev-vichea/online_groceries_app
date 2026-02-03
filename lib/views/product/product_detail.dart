@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:online_groceries_app/components/my_button.dart';
-import 'package:online_groceries_app/provider/add_to_cart_provider.dart';
-import 'package:online_groceries_app/provider/favorite_provider.dart';
+import 'package:online_groceries_app/controllers/cart_controller.dart';
+import 'package:online_groceries_app/controllers/favorite_controller.dart';
 import 'package:online_groceries_app/model/product_model.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/utils/snackbar_helper.dart';
-import 'package:provider/provider.dart';
 
 class ProductDetail extends StatefulWidget {
   final Product product;
@@ -40,6 +40,8 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final currentTotal = _currentProduct.price * _currentProduct.quantity;
+    final cartController = Get.find<CartController>();
+    final favoriteController = Get.find<FavoriteController>();
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -67,7 +69,10 @@ class _ProductDetailState extends State<ProductDetail> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(kDefualtPaddin),
-                        child: Image.asset(_currentProduct.imagePath),
+                        child: Hero(
+                          tag: 'product_${_currentProduct.id}',
+                          child: Image.asset(_currentProduct.imagePath),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(kDefualtPaddin),
@@ -101,22 +106,24 @@ class _ProductDetailState extends State<ProductDetail> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        LikeButton(
-                          size: 25,
-                          isLiked: context.watch<FavoriteProvider>().isFavorite(
-                            _currentProduct,
-                          ),
-                          onTap: (isLiked) async {
-                            context.read<FavoriteProvider>().toggleFavorite(
+                        Obx(
+                          () => LikeButton(
+                            size: 25,
+                            isLiked: favoriteController.isFavorite(
                               _currentProduct,
-                            );
-                            return !isLiked; // Return the new state
-                          },
-                          likeBuilder: (bool isLiked) {
-                            return isLiked
-                                ? Image.asset('assets/icons/liked.png')
-                                : Image.asset('assets/icons/like.png');
-                          },
+                            ),
+                            onTap: (isLiked) async {
+                              favoriteController.toggleFavorite(
+                                _currentProduct,
+                              );
+                              return !isLiked; // Return the new state
+                            },
+                            likeBuilder: (bool isLiked) {
+                              return isLiked
+                                  ? Image.asset('assets/icons/liked.png')
+                                  : Image.asset('assets/icons/like.png');
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -277,7 +284,7 @@ class _ProductDetailState extends State<ProductDetail> {
           text: 'Add To Basket - \$${currentTotal.toStringAsFixed(2)}',
           color: kPrimaryColor,
           onPressed: () {
-            context.read<CartProvider>().addToCart(_currentProduct);
+            cartController.addToCart(_currentProduct);
             SnackBarHelper.messageSnackbar(
               context,
               _currentProduct.quantity == 1

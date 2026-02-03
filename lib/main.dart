@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:online_groceries_app/provider/add_to_cart_provider.dart';
-import 'package:online_groceries_app/provider/favorite_provider.dart';
+import 'package:get/get.dart';
+import 'package:online_groceries_app/controllers/cart_controller.dart';
+import 'package:online_groceries_app/controllers/favorite_controller.dart';
+import 'package:online_groceries_app/controllers/theme_controller.dart';
 import 'package:online_groceries_app/theme/theme.dart';
-import 'package:online_groceries_app/theme/theme_provider.dart';
 import 'package:online_groceries_app/views/main/onbording_screen.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => FavoriteProvider()),
-        ChangeNotifierProvider(create: (context) => CartProvider()),
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  Get.put(CartController());
+  Get.put(FavoriteController());
+  Get.put(ThemeController());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -24,13 +18,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeProvider.themeMode,
-      home: OnbordingScreen(),
+    final themeController = Get.find<ThemeController>();
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeController.themeMode.value,
+        home: const OnbordingScreen(),
+      ),
     );
   }
 }

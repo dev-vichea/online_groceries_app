@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/model/product_model.dart';
-import 'package:online_groceries_app/provider/add_to_cart_provider.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/utils/snackbar_helper.dart';
 import 'package:online_groceries_app/views/product/product_detail.dart';
-import 'package:provider/provider.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -40,7 +40,12 @@ class ProductCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(8),
                   height: 80,
-                  child: Center(child: Image.asset(product.imagePath)),
+                  child: Center(
+                    child: Hero(
+                      tag: 'product_${product.id}',
+                      child: Image.asset(product.imagePath),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -69,11 +74,8 @@ class ProductCard extends StatelessWidget {
             bottom: 10,
             child: GestureDetector(
               onTap: () {
-                final cartProvider = Provider.of<CartProvider>(
-                  context,
-                  listen: false,
-                );
-                cartProvider.addToCart(product);
+                final cartController = Get.find<CartController>();
+                cartController.addToCart(product);
                 SnackBarHelper.messageSnackbar(context, "${product.name} added to cart!");
               },
               child: Container(

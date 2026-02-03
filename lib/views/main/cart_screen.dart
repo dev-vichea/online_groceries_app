@@ -1,198 +1,202 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:online_groceries_app/components/my_button.dart';
-import 'package:online_groceries_app/provider/add_to_cart_provider.dart';
+import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/views/main/screens/order_success.dart';
-import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
-    final cartItems = cartProvider.cartItems;
-    final totalPrice = cartProvider.cartTotal;
+    final cartController = Get.find<CartController>();
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text("My Cart"),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child:
-                cartItems.isEmpty
-                    ? const Center(child: Text("Your cart is empty! 🛒"))
-                    : ListView.separated(
-                      itemCount: cartItems.length,
-                      separatorBuilder:
-                          (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: kDefualtPaddin,
-                            ),
-                            child: Divider(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                      itemBuilder: (context, index) {
-                        final product = cartItems[index];
-                        return ListTile(
-                          leading: Image.asset(
-                            product.imagePath,
-                            width: 60,
-                            fit: BoxFit.contain,
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product.name,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    "${product.description}, ${product.unit}",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  context.read<CartProvider>().removeFromCart(
-                                    product.id,
-                                  );
-                                },
-                                icon: const Icon(Icons.close_rounded),
-                              ),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 5),
+    return Obx(() {
+      final cartItems = cartController.cartItems;
+      final totalPrice = cartController.cartTotal;
 
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // quantity control
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      borderRadius: BorderRadius.circular(20),
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text("My Cart"),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child:
+                  cartItems.isEmpty
+                      ? const Center(child: Text("Your cart is empty! 🛒"))
+                      : ListView.separated(
+                        itemCount: cartItems.length,
+                        separatorBuilder:
+                            (context, index) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: kDefualtPaddin,
+                              ),
+                              child: Divider(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                        itemBuilder: (context, index) {
+                          final product = cartItems[index];
+                          return ListTile(
+                            leading: Image.asset(
+                              product.imagePath,
+                              width: 60,
+                              fit: BoxFit.contain,
+                            ),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.name,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                    child: Row(
+                                    Text(
+                                      "${product.description}, ${product.unit}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    cartController.removeFromCart(product.id);
+                                  },
+                                  icon: const Icon(Icons.close_rounded),
+                                ),
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 5),
+
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // quantity control
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.surface,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.remove,
+                                              size: 18,
+                                              color:
+                                                  Theme.of(
+                                                    context,
+                                                  ).colorScheme.secondary,
+                                            ),
+                                            padding: EdgeInsets.zero,
+                                            constraints: BoxConstraints(),
+                                            onPressed: () {
+                                              cartController.decrementQty(
+                                                product.id,
+                                              );
+                                            },
+                                          ),
+                                          Text('${product.quantity}'),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.add,
+                                              size: 18,
+                                              color: kPrimaryColor,
+                                            ),
+                                            padding: EdgeInsets.zero,
+                                            constraints: BoxConstraints(),
+                                            onPressed: () {
+                                              cartController.incrementQty(
+                                                product.id,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
                                       children: [
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.remove,
-                                            size: 18,
-                                            color:
-                                                Theme.of(
-                                                  context,
-                                                ).colorScheme.secondary,
+                                        Text(
+                                          '\$${(product.price * product.quantity).toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                          padding: EdgeInsets.zero,
-                                          constraints: BoxConstraints(),
-                                          onPressed: () {
-                                            context
-                                                .read<CartProvider>()
-                                                .decrementQty(product.id);
-                                          },
-                                        ),
-                                        Text('${product.quantity}'),
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.add,
-                                            size: 18,
-                                            color: kPrimaryColor,
-                                          ),
-                                          padding: EdgeInsets.zero,
-                                          constraints: BoxConstraints(),
-                                          onPressed: () {
-                                            context
-                                                .read<CartProvider>()
-                                                .incrementQty(product.id);
-                                          },
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        '\$${(product.price * product.quantity).toStringAsFixed(2)}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+            ),
+            if (cartItems.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    MyButton(
+                      textColor: Theme.of(context).colorScheme.onTertiary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: kDefualtPaddin,
+                      ),
+                      text: "Go to Checkout",
+                      color: kPrimaryColor,
+                      onPressed: () {
+                        _showCheckoutBottomSheet(context, totalPrice);
                       },
                     ),
-          ),
-          if (cartItems.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  MyButton(
-                    textColor: Theme.of(context).colorScheme.onTertiary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kDefualtPaddin,
-                    ),
-                    text: "Go to Checkout",
-                    color: kPrimaryColor,
-                    onPressed: () {
-                      _showCheckoutBottomSheet(context, totalPrice);
-                    },
-                  ),
-                  Positioned(
-                    right: 50,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        "\$${totalPrice.toStringAsFixed(2)}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                    Positioned(
+                      right: 50,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          "\$${totalPrice.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 
   void _showCheckoutBottomSheet(BuildContext context, double totalPrice) {
+    final cartController = Get.find<CartController>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -316,7 +320,7 @@ class CartScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      "Total: \$${context.read<CartProvider>().cartTotal.toStringAsFixed(2)}",
+                                      "Total: \$${cartController.cartTotal.toStringAsFixed(2)}",
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -344,7 +348,7 @@ class CartScreen extends StatelessWidget {
                         );
 
                         if (shouldProceed == true) {
-                          context.read<CartProvider>().clearCart();
+                          cartController.clearCart();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
