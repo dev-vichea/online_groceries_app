@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/utils/snackbar_helper.dart';
@@ -17,7 +18,9 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: ResponsiveContainer(
+          maxWidth: 680,
+          child: Column(
           children: [
             const SizedBox(height: 10),
             Obx(() {
@@ -217,8 +220,9 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget buildListTile(
     BuildContext context,

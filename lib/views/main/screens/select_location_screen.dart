@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/views/auth/login_screen.dart';
 
@@ -30,7 +31,8 @@ class SelectLocationScreenState extends State<SelectLocationScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
+        child: ResponsiveContainer(
+          maxWidth: 500,
           padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
           child: Column(
             mainAxisSize: MainAxisSize.min,

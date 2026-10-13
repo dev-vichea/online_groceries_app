@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/model/groceries_model.dart';
 import 'package:online_groceries_app/model/product_model.dart';
 import 'package:online_groceries_app/utils/constants.dart';
@@ -29,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
+        child: ResponsiveContainer(
+          maxWidth: 960,
+          child: Column(
           children: [
             SizedBox(height: kDefualtPaddin * 2),
             Center(
@@ -162,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

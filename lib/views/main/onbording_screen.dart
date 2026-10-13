@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/views/auth/signin_screen.dart';
 
@@ -17,34 +18,35 @@ class OnbordingScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Center(
+          ResponsiveContainer(
+            maxWidth: 480,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset('assets/icons/carrot.png', width: 40),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Welcome to our store',
                   style: TextStyle(fontSize: 38, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                Text(
-                  'Ger your groceries in as fast as one hour',
+                const Text(
+                  'Get your groceries in as fast as one hour',
                   style: TextStyle(color: Colors.grey),
                 ),
-                SizedBox(height: 1),
+                const SizedBox(height: 1),
                 MyButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SigninScreen()),
+                      MaterialPageRoute(builder: (context) => const SigninScreen()),
                     );
                   },
                   text: 'Get Started',
                   color: kPrimaryColor,
-                  padding: EdgeInsets.all(kDefualtPaddin),
+                  padding: const EdgeInsets.all(kDefualtPaddin),
                 ),
-                SizedBox(height: 60),
+                const SizedBox(height: 60),
               ],
             ),
           ),

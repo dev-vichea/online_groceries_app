@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/app.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/utils/snackbar_helper.dart';
@@ -90,7 +91,8 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
           ),
         ],
       ),
-      body: Padding(
+      body: ResponsiveContainer(
+        maxWidth: 480,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

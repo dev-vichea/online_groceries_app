@@ -3,6 +3,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/controllers/favorite_controller.dart';
@@ -51,10 +52,12 @@ class _ProductDetailState extends State<ProductDetail> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Column(
-        children: [
-          Container(
-            height: size.height * 0.4,
+      body: ResponsiveContainer(
+        maxWidth: 820,
+        child: Column(
+          children: [
+            Container(
+              height: (size.height * 0.4).clamp(240.0, 380.0),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,
               borderRadius: const BorderRadius.only(
@@ -292,29 +295,36 @@ class _ProductDetailState extends State<ProductDetail> {
           ),
         ],
       ),
-      bottomNavigationBar: SafeArea(
-        child: MyButton(
-          padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
-          text: 'Add To Basket - \$${currentTotal.toStringAsFixed(2)}',
-          color: kPrimaryColor,
-          onPressed: () {
-            final authController = Get.find<AuthController>();
-            authController.requireAuth(
-              context,
-              featureName: 'add items to basket',
-              onAuthenticated: () {
-                cartController.addToCart(_currentProduct);
-                SnackBarHelper.messageSnackbar(
-                  context,
-                  _currentProduct.quantity == 1
-                      ? "${widget.product.name} added to cart!"
-                      : "${_currentProduct.quantity} ${widget.product.name} added to cart!",
-                );
-              },
-            );
-          },
+    ),
+    bottomNavigationBar: SafeArea(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 820),
+          child: MyButton(
+            padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
+            text: 'Add To Basket - \$${currentTotal.toStringAsFixed(2)}',
+            color: kPrimaryColor,
+            onPressed: () {
+              final authController = Get.find<AuthController>();
+              authController.requireAuth(
+                context,
+                featureName: 'add items to basket',
+                onAuthenticated: () {
+                  cartController.addToCart(_currentProduct);
+                  SnackBarHelper.messageSnackbar(
+                    context,
+                    _currentProduct.quantity == 1
+                        ? "${widget.product.name} added to cart!"
+                        : "${_currentProduct.quantity} ${widget.product.name} added to cart!",
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

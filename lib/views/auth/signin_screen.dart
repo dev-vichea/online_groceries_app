@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/app.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/components/social_auth_row.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
@@ -64,8 +65,10 @@ class SigninScreen extends StatelessWidget {
             child: Image.asset('assets/images/sub-bg.png', fit: BoxFit.contain),
           ),
           SafeArea(
-            child: Column(
-              children: [
+            child: ResponsiveContainer(
+              maxWidth: 500,
+              child: Column(
+                children: [
                 // Top skip button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -258,8 +261,9 @@ class SigninScreen extends StatelessWidget {
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }

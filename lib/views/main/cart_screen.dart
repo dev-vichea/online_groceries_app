@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
@@ -25,7 +26,9 @@ class CartScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        body: Column(
+        body: ResponsiveContainer(
+          maxWidth: 760,
+          child: Column(
           children: [
             Expanded(
               child:
@@ -192,19 +195,21 @@ class CartScreen extends StatelessWidget {
               ),
           ],
         ),
-      );
-    });
-  }
-
-  void _showCheckoutBottomSheet(BuildContext context, double totalPrice) {
-    final cartController = Get.find<CartController>();
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+    );
+  });
+}
+
+void _showCheckoutBottomSheet(BuildContext context, double totalPrice) {
+  final cartController = Get.find<CartController>();
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    constraints: const BoxConstraints(maxWidth: 560),
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
       builder: (context) {
         return Wrap(
           children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -55,11 +56,10 @@ class _FilterScreenState extends State<FilterScreen> {
       // Wrap with Material to prevent errors
       // color: Colors.white,
       body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
-            child: Column(
+        child: ResponsiveContainer(
+          maxWidth: 580,
+          padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
@@ -79,9 +79,8 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    }
 
   Widget _buildSectionTitle(String title) {
     return Padding(

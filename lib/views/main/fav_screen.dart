@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/controllers/favorite_controller.dart';
@@ -25,7 +26,9 @@ class FavoritesScreen extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: false,
         ),
-        body: Column(
+        body: ResponsiveContainer(
+          maxWidth: 760,
+          child: Column(
           children: [
             Expanded(
               child:
@@ -127,7 +130,8 @@ class FavoritesScreen extends StatelessWidget {
               ),
           ],
         ),
-      );
-    });
-  }
+      ),
+    );
+  });
+}
 }

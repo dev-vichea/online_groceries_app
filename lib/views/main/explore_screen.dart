@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/model/product_model.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/widgets/category_card.dart';
@@ -29,24 +30,35 @@ class ExploreScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      body: Padding(
+      body: ResponsiveContainer(
+        maxWidth: 960,
         padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
         child: Column(
           children: [
             SearchField(products: products),
             const SizedBox(height: 10),
             Expanded(
-              child: GridView.builder(
-                itemCount: categories.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 14,
-                  mainAxisSpacing: 14,
-                  childAspectRatio: 0.95,
-                ),
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-                  return CategoryCard(category: category);
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final crossAxisCount = constraints.maxWidth >= 840
+                      ? 4
+                      : constraints.maxWidth >= 580
+                          ? 3
+                          : 2;
+
+                  return GridView.builder(
+                    itemCount: categories.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 14,
+                      mainAxisSpacing: 14,
+                      childAspectRatio: 0.95,
+                    ),
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+                      return CategoryCard(category: category);
+                    },
+                  );
                 },
               ),
             ),

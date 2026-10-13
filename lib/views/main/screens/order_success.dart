@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:online_groceries_app/app.dart';
 import 'package:online_groceries_app/components/my_button.dart';
 import 'package:online_groceries_app/components/my_trans_button.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 
 class OrderSuccessScreen extends StatefulWidget {
@@ -17,8 +18,9 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: kDefualtPaddin),
+        child: ResponsiveContainer(
+          maxWidth: 480,
+          padding: const EdgeInsets.symmetric(horizontal: kDefualtPaddin),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

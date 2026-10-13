@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:online_groceries_app/app.dart';
 import 'package:online_groceries_app/components/my_button.dart';
 import 'package:online_groceries_app/components/my_text_field.dart';
+import 'package:online_groceries_app/components/responsive_container.dart';
 import 'package:online_groceries_app/components/social_auth_row.dart';
 import 'package:online_groceries_app/components/text_login_signup.dart';
 import 'package:online_groceries_app/controllers/auth_controller.dart';
@@ -123,7 +124,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: ResponsiveContainer(
+          maxWidth: 480,
+          child: Column(
           children: [
             // Top Bar with optional Back Button & Prominent Skip Button
             Padding(
@@ -379,6 +382,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

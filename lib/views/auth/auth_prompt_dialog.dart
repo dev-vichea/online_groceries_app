@@ -13,6 +13,7 @@ class AuthPromptDialog {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      constraints: const BoxConstraints(maxWidth: 520),
       backgroundColor: Colors.transparent,
       builder: (BuildContext sheetContext) {
         final isDark = Theme.of(sheetContext).brightness == Brightness.dark;

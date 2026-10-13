@@ -30,7 +30,7 @@ class ProductCard extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: size.width / 2.4,
+            width: (size.width / 2.4).clamp(160.0, 195.0),
             padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               border: Border.all(
