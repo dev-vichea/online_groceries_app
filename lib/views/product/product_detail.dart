@@ -3,6 +3,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/controllers/favorite_controller.dart';
 import 'package:online_groceries_app/model/product_model.dart';
@@ -113,6 +114,19 @@ class _ProductDetailState extends State<ProductDetail> {
                               _currentProduct,
                             ),
                             onTap: (isLiked) async {
+                              final authController = Get.find<AuthController>();
+                              if (!authController.isAuthenticated.value) {
+                                authController.requireAuth(
+                                  context,
+                                  featureName: 'save "${widget.product.name}" to favorites',
+                                  onAuthenticated: () {
+                                    favoriteController.toggleFavorite(
+                                      _currentProduct,
+                                    );
+                                  },
+                                );
+                                return isLiked;
+                              }
                               favoriteController.toggleFavorite(
                                 _currentProduct,
                               );
@@ -284,14 +298,20 @@ class _ProductDetailState extends State<ProductDetail> {
           text: 'Add To Basket - \$${currentTotal.toStringAsFixed(2)}',
           color: kPrimaryColor,
           onPressed: () {
-            cartController.addToCart(_currentProduct);
-            SnackBarHelper.messageSnackbar(
+            final authController = Get.find<AuthController>();
+            authController.requireAuth(
               context,
-              _currentProduct.quantity == 1
-                  ? "${widget.product.name} added to cart!"
-                  : "${_currentProduct.quantity} ${widget.product.name} added to cart!",
+              featureName: 'add items to basket',
+              onAuthenticated: () {
+                cartController.addToCart(_currentProduct);
+                SnackBarHelper.messageSnackbar(
+                  context,
+                  _currentProduct.quantity == 1
+                      ? "${widget.product.name} added to cart!"
+                      : "${_currentProduct.quantity} ${widget.product.name} added to cart!",
+                );
+              },
             );
-            // _addToCartMess(context);
           },
         ),
       ),

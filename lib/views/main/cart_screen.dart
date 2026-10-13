@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/views/main/screens/order_success.dart';
@@ -311,6 +312,15 @@ class CartScreen extends StatelessWidget {
                       text: "Place Order",
                       color: kPrimaryColor,
                       onPressed: () async {
+                        final authController = Get.find<AuthController>();
+                        if (!authController.isAuthenticated.value) {
+                          authController.requireAuth(
+                            context,
+                            featureName: 'place an order and checkout',
+                          );
+                          return;
+                        }
+
                         final shouldProceed = await showDialog<bool>(
                           context: context,
                           builder:
@@ -349,6 +359,7 @@ class CartScreen extends StatelessWidget {
 
                         if (shouldProceed == true) {
                           cartController.clearCart();
+                          if (!context.mounted) return;
                           Navigator.push(
                             context,
                             MaterialPageRoute(

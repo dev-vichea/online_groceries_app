@@ -56,7 +56,7 @@ class SelectLocationScreenState extends State<SelectLocationScreen> {
                     labelText: 'Your Zone',
                     labelStyle: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
-                  value: _selectedZone,
+                  initialValue: _selectedZone,
                   items:
                       _zones.map((zone) {
                         return DropdownMenuItem(value: zone, child: Text(zone));
@@ -77,7 +77,7 @@ class SelectLocationScreenState extends State<SelectLocationScreen> {
                     labelText: 'Your Area',
                     labelStyle: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
-                  value: _selectedArea,
+                  initialValue: _selectedArea,
                   items:
                       _areas.map((area) {
                         return DropdownMenuItem(value: area, child: Text(area));

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/utils/constants.dart';
 import 'package:online_groceries_app/views/main/cart_screen.dart';
 import 'package:online_groceries_app/views/main/explore_screen.dart';
@@ -10,7 +12,7 @@ class App extends StatefulWidget {
   const App({super.key});
 
   @override
-  _AppState createState() => _AppState();
+  State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -25,6 +27,36 @@ class _AppState extends State<App> {
   ];
 
   void _onItemTapped(int index) {
+    if (index == 2) {
+      // Cart shopping tab
+      final authController = Get.find<AuthController>();
+      authController.requireAuth(
+        context,
+        featureName: 'view your shopping cart',
+        onAuthenticated: () {
+          setState(() {
+            _selectedIndex = 2;
+          });
+        },
+      );
+      return;
+    }
+
+    if (index == 3) {
+      // Favorites shopping tab
+      final authController = Get.find<AuthController>();
+      authController.requireAuth(
+        context,
+        featureName: 'view your saved favorites',
+        onAuthenticated: () {
+          setState(() {
+            _selectedIndex = 3;
+          });
+        },
+      );
+      return;
+    }
+
     setState(() {
       _selectedIndex = index;
     });

@@ -18,11 +18,15 @@ class CategoryProduct extends StatelessWidget {
         children: [
           Image.asset(groceries.imgPath, width: 72),
           SizedBox(width: 15),
-          Text(
-            groceries.text,
-            style: TextStyle(
-              fontSize: 18,
-              color: Theme.of(context).colorScheme.primaryFixed,
+          Expanded(
+            child: Text(
+              groceries.text,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.primaryFixed,
+              ),
             ),
           ),
         ],

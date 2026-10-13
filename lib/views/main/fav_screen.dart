@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries_app/components/my_button.dart';
+import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/controllers/favorite_controller.dart';
 import 'package:online_groceries_app/model/product_model.dart';
@@ -107,12 +108,19 @@ class FavoritesScreen extends StatelessWidget {
                   text: "Add All to Cart",
                   color: kPrimaryColor,
                   onPressed: () {
-                    SnackBarHelper.messageSnackbar(
+                    final authController = Get.find<AuthController>();
+                    authController.requireAuth(
                       context,
-                      'All Items has been added to cart!',
-                    );
-                    cartController.addAllFavoritesToCart(
-                      favoriteController.favorites.toList(),
+                      featureName: 'add all favorite items to cart',
+                      onAuthenticated: () {
+                        SnackBarHelper.messageSnackbar(
+                          context,
+                          'All Items has been added to cart!',
+                        );
+                        cartController.addAllFavoritesToCart(
+                          favoriteController.favorites.toList(),
+                        );
+                      },
                     );
                   },
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/model/product_model.dart';
 import 'package:online_groceries_app/utils/constants.dart';
@@ -8,8 +9,13 @@ import 'package:online_groceries_app/views/product/product_detail.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
+  final String? heroTag;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCard({
+    super.key,
+    required this.product,
+    this.heroTag,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +44,15 @@ class ProductCard extends StatelessWidget {
               children: [
                 const SizedBox(height: 12),
                 Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   height: 80,
                   child: Center(
-                    child: Hero(
-                      tag: 'product_${product.id}',
-                      child: Image.asset(product.imagePath),
-                    ),
+                    child: heroTag != null
+                        ? Hero(
+                            tag: heroTag!,
+                            child: Image.asset(product.imagePath),
+                          )
+                        : Image.asset(product.imagePath),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -74,9 +82,19 @@ class ProductCard extends StatelessWidget {
             bottom: 10,
             child: GestureDetector(
               onTap: () {
-                final cartController = Get.find<CartController>();
-                cartController.addToCart(product);
-                SnackBarHelper.messageSnackbar(context, "${product.name} added to cart!");
+                final authController = Get.find<AuthController>();
+                authController.requireAuth(
+                  context,
+                  featureName: 'add "${product.name}" to your cart',
+                  onAuthenticated: () {
+                    final cartController = Get.find<CartController>();
+                    cartController.addToCart(product);
+                    SnackBarHelper.messageSnackbar(
+                      context,
+                      "${product.name} added to cart!",
+                    );
+                  },
+                );
               },
               child: Container(
                 padding: const EdgeInsets.all(5),

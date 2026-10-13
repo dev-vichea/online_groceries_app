@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_groceries_app/controllers/auth_controller.dart';
 import 'package:online_groceries_app/controllers/cart_controller.dart';
 import 'package:online_groceries_app/controllers/favorite_controller.dart';
 import 'package:online_groceries_app/controllers/theme_controller.dart';
@@ -7,6 +8,7 @@ import 'package:online_groceries_app/theme/theme.dart';
 import 'package:online_groceries_app/views/main/onbording_screen.dart';
 
 void main() {
+  Get.put(AuthController());
   Get.put(CartController());
   Get.put(FavoriteController());
   Get.put(ThemeController());
